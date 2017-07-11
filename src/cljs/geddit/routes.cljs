@@ -24,6 +24,9 @@
   (defroute "/about" []
     (re-frame/dispatch [:set-active-panel :about-panel]))
 
+  (defroute "/your-face" []
+    (.log js/console "omg your face!!")
+    (re-frame/dispatch [:set-active-panel :about-panel]))
 
   ;; --------------------
   (hook-browser-navigation!))
