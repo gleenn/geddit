@@ -5,6 +5,8 @@
                  [re-frame "0.9.4"]
                  [re-frisk "0.4.5"]
                  [org.clojure/core.async "0.2.391"]
+                 [day8.re-frame/http-fx "0.1.4"]
+                 [cljs-ajax "0.6.0"]
                  [re-com "2.0.0"]
                  [secretary "1.2.3"]
                  [garden "1.3.2"]
@@ -53,6 +55,7 @@
                     :source-map-timestamp true
                     :preloads             [devtools.preload]
                     :external-config      {:devtools/config {:features-to-install :all}}
+                    :optimizations :none
                     }}
 
     {:id           "min"

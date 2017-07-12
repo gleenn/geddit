@@ -1,5 +1,7 @@
 (ns geddit.events
   (:require [re-frame.core :as re-frame]
+            [day8.re-frame.http-fx]
+            [ajax.core]
             [geddit.db :as db]))
 
 (defonce last-temp-id (atom 0))
@@ -23,11 +25,22 @@
   :create-dongle
   [(re-frame/inject-cofx :temp-id)]
   (fn [cofx [_ name]]
-    {;:http-xhrio {:uri (str "http://localhost:3449/dongles")
-     ;             :method :post
-     ;             :timeout 10000
-     ;             ;:response-format (ajax/json-response-format {:keywords? true})
-     ;             ;:on-success [:added-cart (:temp-id cofx)]       ;; start using temp-id
-     ;             ;:on-failure [:notified-error (:temp-id cofx)]
-     ;             }
-     :db (update-in (:db cofx) [:dongles] conj {:name name :id (:temp-id cofx)})}))
+    {:http-xhrio {:uri (str "http://localhost:3449/dongles")
+                  :method :post
+                  :timeout 10000
+                  :format (ajax.core/json-request-format)
+                  :params {:name name}
+                  :response-format (ajax.core/json-response-format {:keywords? true})
+                  :on-success [:created-dongle (:temp-id cofx)]
+                  :on-failure [:notified-error (:temp-id cofx)]}
+     :db         (update-in (:db cofx) [:dongles] conj {:name name :id (:temp-id cofx)})}))
+
+(re-frame/reg-event-fx
+  :created-dongle
+  (fn [cofx [_ id json-body]]
+    (.log js/console (str "Created dongle! json: " json-body))))
+
+(re-frame/reg-event-fx
+  :notified-error
+  (fn [cofx & stuff]
+    (.log js/console (str "Error making some ajax happen bro - " stuff " -"))))
