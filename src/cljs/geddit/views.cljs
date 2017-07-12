@@ -12,6 +12,12 @@
        :label (str "Hello from " @name ". This is the Home Page.")
        :level :level1])))
 
+(defn create-dongle-button []
+  [re-com/button
+   :label "Create Dongle!"
+   :on-click (fn [e] (re-frame/dispatch [:create-dongle "Hal"]))
+   ])
+
 (defn link-to-about-page []
   [re-com/hyperlink-href
    :label "go to About Page"
@@ -20,7 +26,9 @@
 (defn home-panel []
   [re-com/v-box
    :gap "1em"
-   :children [[home-title] [link-to-about-page]]])
+   :children [[home-title]
+              [create-dongle-button]
+              [link-to-about-page]]])
 
 
 ;; about

@@ -1,4 +1,5 @@
 (ns geddit.db)
 
 (def default-db
-  {:name "re-frame"})
+  {:name "re-frame"
+   :dongles []})
